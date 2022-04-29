@@ -18,7 +18,7 @@ async function run(){
     try{
         await client.connect();
         const enventoryCollection = client.db('inventoryManagement').collection('inventory');
-
+        console.log('inventory connected');
     }
     finally{
 
