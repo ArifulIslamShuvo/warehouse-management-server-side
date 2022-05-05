@@ -14,13 +14,22 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.eut81.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-async function run(){
-    try{
+async function run() {
+    try {
         await client.connect();
         const enventoryCollection = client.db('inventoryManagement').collection('inventory');
         console.log('inventory connected');
+        
+        // create all inventory API
+        //  http://localhost:5000/inventory
+        app.get('/inventory', async (req, res) => {
+            const query = {};
+            const cursor = enventoryCollection.find(query);
+            const inventory = await cursor.toArray();
+            res.send(inventory);
+        });
     }
-    finally{
+    finally {
 
     }
 
@@ -28,7 +37,7 @@ async function run(){
 run().catch(console.dir);
 
 
-app.get('/', (req, res) =>{
+app.get('/', (req, res) => {
     res.send('enventory-management');
 });
 
