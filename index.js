@@ -23,7 +23,10 @@ async function run() {
         // create all inventory API
         //  http://localhost:5000/inventory
         app.get('/inventory', async (req, res) => {
-            const query = {};
+            const email = req.query.email;
+    
+            const query = { email: email };
+            /// const query = {};
             const cursor = enventoryCollection.find(query);
             const inventory = await cursor.toArray();
             res.send(inventory);
