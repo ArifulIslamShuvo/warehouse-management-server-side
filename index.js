@@ -30,12 +30,19 @@ async function run() {
         });
         
         // http://localhost:5000/inventory/6273af02f96b62d28d55e230
-        // create single inventory APL
+        // get single inventory APL
          app.get('/inventory/:id', async(req, res) =>{
             const id = req.params.id;
             const query={_id: ObjectId(id)};
             const inventory = await enventoryCollection.findOne(query);
             res.send(inventory);
+        });
+        //  http://localhost:5000/inventory
+         // POST single inentory data
+         app.post('/inventory', async(req, res) =>{
+            const newInventory = req.body;
+            const result = await enventoryCollection.insertOne(newInventory);
+            res.send(result);
         });
     }
     finally {
