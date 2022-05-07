@@ -22,9 +22,9 @@ async function run() {
         
         // create all inventory API
         //  http://localhost:5000/inventory
+       
         app.get('/inventory', async (req, res) => {
             const email = req.query.email;
-    
             const query = { email: email };
             /// const query = {};
             const cursor = enventoryCollection.find(query);
@@ -54,6 +54,19 @@ async function run() {
             const result = await enventoryCollection.deleteOne(query);
             res.send(result);
         });
+
+        app.put('/inventory/:id', async(req, res) =>{
+            const id = req.params.id;
+            const updateQuantity = req.body;
+            const filter = {_id: ObjectId(id)};
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {quantity: updateQuantity.newQuantity}
+            };
+            const result = await enventoryCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+
+        })
     }
     finally {
 
